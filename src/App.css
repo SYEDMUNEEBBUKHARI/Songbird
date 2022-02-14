@@ -10,6 +10,30 @@
   position: relative;
   left: 50%;
 }
+.get-token {
+  background-color: orange;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 10px;
+}
+.mint-token {
+  background-color: orange;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  margin: 10px;
+}
+.user {
+  position: absolute;
+  left: 10px;
+  top: 10px;
+  font-size: 12px;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -17,7 +41,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #242e43;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -38,4 +62,6 @@
   to {
     transform: rotate(360deg);
   }
+}
+.handle-spinner {
 }
