@@ -1,5 +1,5 @@
 import web3 from "./web3";
-const address = "0xB0d45Edfce0f1593f44C9320ca8f262F0AB9dCD7";
+const address = "0x92A54425DFD4aFdb8f4E50de96dcFd8B70C46161";
 const abi = [
   {
     inputs: [
@@ -111,6 +111,36 @@ const abi = [
   },
   {
     inputs: [
+      { internalType: "address", name: "_owner", type: "address" },
+      { internalType: "address", name: "_spender", type: "address" },
+    ],
+    name: "_allowance",
+    outputs: [{ internalType: "uint256", name: "remaining", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "_from", type: "address" },
+      { internalType: "address", name: "_to", type: "address" },
+      { internalType: "uint256", name: "_amount", type: "uint256" },
+    ],
+    name: "_transferFrom",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "approveTheAddress", type: "address" },
+    ],
+    name: "allowContract",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
       { internalType: "address", name: "to", type: "address" },
       { internalType: "uint256", name: "tokenId", type: "uint256" },
     ],
@@ -130,6 +160,13 @@ const abi = [
     inputs: [],
     name: "baseTokenURI",
     outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "checkUserStatus",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
     stateMutability: "view",
     type: "function",
   },
@@ -208,14 +245,14 @@ const abi = [
   },
   {
     inputs: [],
-    name: "renounceOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
+    name: "payandPlay",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "payable",
     type: "function",
   },
   {
     inputs: [],
-    name: "reserveNFTs",
+    name: "renounceOwnership",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -245,6 +282,24 @@ const abi = [
   },
   {
     inputs: [
+      { internalType: "address", name: "_from", type: "address" },
+      { internalType: "address", name: "_to", type: "address" },
+      { internalType: "uint256", name: "_amount", type: "uint256" },
+    ],
+    name: "sendBackToOwner",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "amount", type: "uint256" }],
+    name: "setAmountToPlay",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
       { internalType: "address", name: "operator", type: "address" },
       { internalType: "bool", name: "approved", type: "bool" },
     ],
@@ -261,6 +316,13 @@ const abi = [
     type: "function",
   },
   {
+    inputs: [{ internalType: "address", name: "master", type: "address" }],
+    name: "setTheMasterWallet",
+    outputs: [{ internalType: "bool", name: "", type: "bool" }],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [
       { internalType: "uint256[]", name: "Usertokens", type: "uint256[]" },
     ],
@@ -272,7 +334,10 @@ const abi = [
   {
     inputs: [],
     name: "spinSpinner",
-    outputs: [{ internalType: "uint256[]", name: "", type: "uint256[]" }],
+    outputs: [
+      { internalType: "uint256[]", name: "", type: "uint256[]" },
+      { internalType: "uint256", name: "", type: "uint256" },
+    ],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -358,13 +423,6 @@ const abi = [
     name: "winCount",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [{ internalType: "uint256", name: "winningNft", type: "uint256" }],
-    name: "winNft",
-    outputs: [{ internalType: "uint256[]", name: "", type: "uint256[]" }],
-    stateMutability: "nonpayable",
     type: "function",
   },
   {

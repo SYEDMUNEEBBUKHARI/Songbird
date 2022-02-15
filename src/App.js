@@ -9,8 +9,9 @@ import axios from "axios";
 import _ from "underscore";
 function App() {
   const [account, setAccount] = useState([]);
-  const [tokenId, setTokenId] = useState();
+  const [tokenIds, setTokenId] = useState();
   const baseUrl = "https://coston-explorer.flare.network/api";
+  
   useEffect(async () => {
     await window.ethereum.enable();
     const Accounts = await web3.eth.getAccounts();
@@ -45,7 +46,14 @@ function App() {
     });
     console.log("mint", mint);
   };
+  const setMasterTokens = async () => {
+    console.log("Accounts", account[0]);
 
+    const mint = await contractAbi.methods.setToken(tokenIds).call({
+      from: account[0],
+    });
+    
+  }
   return (
     <div className="App">
       <header className="App-header">
@@ -66,6 +74,9 @@ function App() {
           </button>
           <button className="mint-token" onClick={mintTokens}>
             Mint Tokens
+          </button>
+          <button className="mint-token" onClick={setMasterTokens}>
+            set wallet Tokens
           </button>
         </div>
       </header>
