@@ -18,7 +18,8 @@ const abi = JSON.parse(
 );
 const provider = new HDWalletProvider(
   "second actor venue wreck easily prison brain anger prison card bicycle model",
-  "https://coston-api.flare.network/ext/bc/C/rpc"
+  "https://rinkeby.infura.io/v3/b93d91e7f1d442f28e9d8536b47e0b44"
+  // "https://coston-api.flare.network/ext/bc/C/rpc"
 );
 // https://docs.flare.network/en/networks/coston-testnet
 // const web3 = new Web3(new Web3.providers.HttpProvider('https://coston-api.flare.network/ext/bc/C/rpc'));
@@ -32,7 +33,7 @@ const deploy = async () => {
   const result = await new web3.eth.Contract(abi)
     .deploy({
       data: "0x" + bytecode,
-      arguments:[1,5]
+      arguments: [0, 4],
     })
     .send({ gas: "5000000", from: accounts[0] });
   console.log("Contract deployed to", result.options.address);

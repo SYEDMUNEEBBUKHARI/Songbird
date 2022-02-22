@@ -24,9 +24,13 @@ function Spinner() {
   }, []);
   const spinSpinner = async () => {
     setspin(true);
-    const spin = await contractAbi.methods
-      .spinSpinner()
-      .call({ from: account[0] });
+    const Accounts = await web3.eth.getAccounts();
+    console.log("spin Account", Accounts[0]);
+
+    const spin = await contractAbi.methods.spinSpinner().call({
+      from: Accounts[0],
+      gas: 8000000,
+    });
     console.log("spin result", spin);
 
     if (spin) {

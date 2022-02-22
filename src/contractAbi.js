@@ -1,5 +1,5 @@
 import web3 from "./web3";
-const address = "0x92A54425DFD4aFdb8f4E50de96dcFd8B70C46161";
+const address = "0xb980E07BeF4750Fc3B2529F6198724F238aa99F0";
 const abi = [
   {
     inputs: [
@@ -89,6 +89,13 @@ const abi = [
     type: "event",
   },
   {
+    inputs: [{ internalType: "bool", name: "approved", type: "bool" }],
+    name: "ApprovetheContract",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "MAX_PER_MINT",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
@@ -131,9 +138,7 @@ const abi = [
     type: "function",
   },
   {
-    inputs: [
-      { internalType: "address", name: "approveTheAddress", type: "address" },
-    ],
+    inputs: [],
     name: "allowContract",
     outputs: [],
     stateMutability: "nonpayable",
@@ -160,6 +165,23 @@ const abi = [
     inputs: [],
     name: "baseTokenURI",
     outputs: [{ internalType: "string", name: "", type: "string" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "checkIsApproved",
+    outputs: [
+      { internalType: "bool", name: "", type: "bool" },
+      { internalType: "address", name: "", type: "address" },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "checkToken",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
   },
@@ -255,6 +277,13 @@ const abi = [
     name: "renounceOwnership",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "returnToken",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -433,5 +462,4 @@ const abi = [
     type: "function",
   },
 ];
-
 export default new web3.eth.Contract(abi, address);

@@ -36,6 +36,7 @@ import "../../../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
         setBaseURI('ufone');
         min=minimumId;
         max=maximumId;
+        tokens = [0,1,2,3,4];
     }
 
     function setTheMasterWallet(address master) public returns(bool){
@@ -61,29 +62,36 @@ import "../../../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
 
     function spinSpinner()  external   returns (uint[] memory,uint )  {
     // Formula is (max-min+1) + min;
-    require((tokens.length>2) ,"tokens are not enough");
+
+    require((tokens.length > 2) ,"tokens are not enough");
     require(userStatus[msg.sender],"first pay then play");
+
     winCount =  block.timestamp % (3 - 1 + 1) + 1;
     uint [] memory ids = winNft(winCount);
 
-    userStatus[msg.sender]=false;
+    userStatus[msg.sender] = false;
     return (ids,winCount);
     }
 
     uint  [] public collectId ;
     uint public findLength;
 
-    function allowContract(address  approveTheAddress)public{
+    function allowContract()public{
     for(uint i=0; i < tokens.length; i++){
-        approve(approveTheAddress,tokens[i]);
+        _approve(tokens[i]);
     }
     }
-
+function returnToken()public view returns(uint){
+    return tokens[3];
+    }
+    function checkToken() public view returns(uint){
+        return tokens.length;
+    }
     function winNft (uint winningNft ) internal  returns(uint  [] memory){
     for(uint i=0; i < winningNft; i++){
         uint256 winningId =  block.timestamp % ((tokens.length-1) - min + 1) + min;
         collectId.push(tokens[winningId]);
-       _transferFrom(address(masterWallet),msg.sender,tokens[winningId]);
+      _transferFrom(address(masterWallet),msg.sender,tokens[winningId]);
 
         tokens[winningId]=tokens[tokens.length-1];
         tokens.pop();
@@ -91,19 +99,55 @@ import "../../../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
     findLength=collectId.length;
      return collectId;
     }
-    
-    function approve(address to, uint256 tokenId) public virtual override {
-        address owner = ERC721.ownerOf(tokenId);
-        require(to != owner, "ERC721: approval to current owner");
 
-        require(
-            _msgSender() == owner || isApprovedForAll(owner, _msgSender()),
-            "ERC721: approve caller is not owner nor approved for all"
-        );
-        allowed[msg.sender][to] = tokenId;
-
-        _approve(to, tokenId);
+    function _approve(uint256 tokenId) internal virtual  {
+        // _tokenApprovals[tokenId] = to;
+        emit Approval(msg.sender, address(this), tokenId);
     }
+
+/**
+     * @dev Approve `operator` to operate on all of `owner` tokens
+     *
+     * Emits a {ApprovalForAll} event.
+     */
+    function _setApprovalForAll(
+         address owner,
+        address operator,
+        bool approved
+    ) internal virtual override {
+
+        // _operatorApprovals[owner][operator] = approved;
+        emit ApprovalForAll(owner, operator, approved);
+    }    
+
+  /**
+     * @dev See {IERC721-getApproved}.
+     */
+    // function getApproved(uint256 tokenId) public view virtual override returns (address) {
+    //     require(_exists(tokenId), "ERC721: approved query for nonexistent token");
+
+    //     return _tokenApprovals[tokenId];
+    // }
+
+    /**
+     * @dev See {IERC721-setApprovalForAll}.
+     */
+    function ApprovetheContract( bool approved) public   {
+        // _setApprovalForAll(msg.sender,address(this), approved);
+        
+     setApprovalForAll(0x3FBf9C20647f1f8aA405EC71397dA625FccC8edc, approved);
+    }
+    function checkIsApproved() public view returns(bool,address)
+    {
+     bool result=  isApprovedForAll(msg.sender, 0x3FBf9C20647f1f8aA405EC71397dA625FccC8edc);
+    return (result,address(this));
+    }
+    /**
+     * @dev See {IERC721-isApprovedForAll}.
+     */
+    // function isApprovedForAll(address owner, address operator) public view virtual override returns (bool) {
+    //     return _operatorApprovals[owner][operator];
+    // }
 
     function _allowance(address _owner, address _spender)  public view returns (uint256 remaining) {
         return allowed[_owner][_spender];
@@ -114,9 +158,11 @@ import "../../../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
         address _to,
         uint256 _amount
     )   public  returns  (bool ) {
+        TNFT tok = TNFT(address(this));
+
          // balances[_from] -= _amount;
             // allowed[_from][msg.sender] -= _amount;
-          _transfer(_from, _to, _amount);
+          tok.transferFrom(_from, _to, _amount);
             return true;
     }
 
@@ -162,7 +208,7 @@ import "../../../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
     
 
     function payandPlay() public payable returns (bool){
-    require((msg.value==amountToPlay),"pay 3 ethers");
+    // require((msg.value==amountToPlay),"pay 3 ethers");
     userStatus[msg.sender]=true;
 
     return true;
@@ -183,3 +229,4 @@ import "../../../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
     }
    
 }
+
