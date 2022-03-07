@@ -21,117 +21,94 @@ function App() {
     const Accounts = await web3.eth.getAccounts();
     setAccount(Accounts);
     console.log("Accounts", account[0]);
-    const data = await axios.get(
-      `${baseUrl}?action=${"tokentx"}&address=${
-        Accounts[0]
-      }&module=${"account"}`
-    );
-    console.log(" Data", data);
+    // const data = await axios.get(
+    //   `${baseUrl}?action=${"tokentx"}&address=${
+    //     Accounts[0]
+    //   }&module=${"account"}`
+    // );
+    // console.log(" Data", data);
 
-    var destArray = _.uniq(data.data.result, (x) => x.tokenID);
-    const collectData = destArray.map((data) => data.tokenID);
-    console.log("Token Ids Data", collectData);
-    setTokenId(collectData);
+    // var destArray = _.uniq(data.data.result, (x) => x.tokenID);
+    // const collectData = destArray.map((data) => data.tokenID);
+    // console.log("Token Ids Data", collectData);
+    // setTokenId(collectData);
   }, []);
-  const extractTokenIds = async () => {
-    console.log("Accounts", account[0]);
 
-    const tokensOfOwner = await contractAbi.methods
-      .tokensOfOwner(account[0])
-      .call({ from: account[0] });
-    console.log("tokensOfOwner", tokensOfOwner);
-  };
+  // for mint
   const mintTokens = async () => {
+    await window.ethereum.enable();
+
     const Accounts = await web3.eth.getAccounts();
 
     console.log("Accounts", account[0]);
 
-    const mint = await contractAbi.methods.mintNFTs(5).send({
+    const mint = await contractAbi.methods.mintTheTokens(Accounts[0], 1).send({
       from: Accounts[0],
+      gas: 3000000,
       // value: 3,
     });
-    console.log("mint", mint);
+    console.log("mintTokens", mint);
   };
-  const setMasterTokens = async () => {
-    console.log("Accounts", account[0]);
-    // tokenIds;
-    const mint = await contractAbi.methods.setToken([0, 1, 2, 3, 4]).call({
-      from: account[0],
-    });
-  };
-  const payAndPlay = async () => {
-    console.log("Accounts", account[0]);
+
+  const checkBalance = async () => {
     const Accounts = await web3.eth.getAccounts();
+    console.log("Accounts", Accounts[0]);
 
-    const mint = await contractAbi.methods.payandPlay().send({
-      from: Accounts[0],
-      value: 3 * 10 ** 18,
-      gas: 3000000,
-    });
-    console.log("mint", mint);
-  };
-  const setAmount = async () => {
-    console.log("Accounts", account[0]);
-
-    const mint = await contractAbi.methods.setAmountToPlay(3).call({
-      from: account[0],
-    });
-    console.log("mint", 3 * 10 ** 18);
-  };
-
-  const setToken = async () => {
-    console.log("Accounts", account[0]);
-
-    const mint = await contractAbi.methods.setToken([0, 1, 2, 3, 4]).call({
-      from: account[0],
-    });
-    console.log("mint", 3 * 10 ** 18);
-  };
-  const getToken = async (address) => {
-    console.log("Accounts", account[0]);
-
-    const tokens = await contractAbi.methods.tokensOfOwner(address).call({
-      from: account[0],
-    });
-    console.log("tokens", tokens);
-  };
-  const setWallet = async () => {
-    console.log("Accounts", account[0]);
-
-    const mint = await contractAbi.methods
-      .setTheMasterWallet(masterAddress)
+    const chkBalance = await contractAbi.methods
+      .checkBalance(Accounts[0])
       .call({
-        from: account[0],
+        from: Accounts[0],
       });
-    console.log("mint", 3 * 10 ** 18);
+    console.log("chkBalance", chkBalance);
   };
 
-  const Approve = async () => {
-    console.log("Accounts", account[0]);
+  const makeApproveToAll = async () => {
+    const Accounts = await web3.eth.getAccounts();
+    console.log("Accounts", Accounts[0]);
 
-    const approve = await contractAbi.methods
-      .ApprovetheContract( true)
+    const makeApproveToAll = await contractAbi.methods
+      .makeApproveToAll(Accounts[0])
+      .send({
+        from: Accounts[0],
+        gas: 3000000,
+      });
+    console.log("makeApproveToAll", makeApproveToAll);
+  };
+
+  const checkApproved = async () => {
+    const Accounts = await web3.eth.getAccounts();
+    console.log("Accounts", Accounts[0]);
+    //owner contract address approved
+    const checkIsApproved = await contractAbi.methods
+      .checkApproved(Accounts[0], "0x31146576B6e4d6d8625Aed2d6a3Bab9cCe6C8BC1")
       .call({
-        from: account[0],
+        from: Accounts[0],
       });
-    console.log("approve", approve);
-  };
-
-  const checkToken = async () => {
-    console.log("Accounts", account[0]);
-
-    const checkToken = await contractAbi.methods.checkToken().call({
-      from: account[0],
-    });
-    console.log("checkToken", checkToken);
-  };
-  const checkApprove = async () => {
-    console.log("Accounts", account[0]);
-
-    const checkIsApproved = await contractAbi.methods.checkIsApproved().call({
-      from: account[0],
-    });
     console.log("checkIsApproved", checkIsApproved);
+  };
+  //swictch to account to and pass address of A
+  const transferFrom = async (to, tokenId) => {
+    const Accounts = await web3.eth.getAccounts();
+    console.log("Accounts", Accounts[0]);
+    console.log("Accounts 1", Accounts[1]);
+    //Account A
+    const transferFrom = await contractAbi.methods
+      .transferFrom("0x31146576B6e4d6d8625Aed2d6a3Bab9cCe6C8BC1", to, tokenId)
+      .send({
+        from: Accounts[0],
+        gas: 3000000,
+      });
+    console.log("transferFrom", transferFrom);
+  };
+
+  const checkTokens = async () => {
+    const Accounts = await web3.eth.getAccounts();
+    console.log("Accounts", Accounts[0]);
+    //owner contract address approved
+    const checkTokens = await contractAbi.methods.tokens(2).call({
+      from: Accounts[0],
+    });
+    console.log("checkTokens", checkTokens);
   };
   return (
     <div className="App">
@@ -143,54 +120,33 @@ function App() {
           </span>{" "}
           {account[0]}
         </div>
-        <div className="handle-spinner">
-          {" "}
-          <Spinner />
-        </div>
+        <div className="handle-spinner"> </div>
+        <Spinner />
         <div>
-          <label className="label"> Set Master Wallet: </label>
-          <input
-            type="text"
-            onChange={(e) => setTheMasterWallet(e.target.value)}
-          />
-          <button onClick={setWallet}>Submit</button>
-        </div>
-        <div>
-          <button className="get-token" onClick={extractTokenIds}>
-            Get Tokens tokensOfOwner
-          </button>
           <button className="mint-token" onClick={mintTokens}>
             Mint Tokens
           </button>
-          <button className="mint-token" onClick={setMasterTokens}>
-            set wallet Tokens
+
+          <button className="mint-token" onClick={() => checkBalance()}>
+            checkBalance
           </button>
-          <button className="mint-token" onClick={payAndPlay}>
-            pay and play
+
+          <button className="mint-token" onClick={() => makeApproveToAll()}>
+            makeApproveToAll
           </button>
-          <button className="mint-token" onClick={setAmount}>
-            set fee
-          </button>
-          <button className="mint-token" onClick={setToken}>
-            set Token
+          <button className="mint-token" onClick={() => checkApproved()}>
+            checkApproved
           </button>
           <button
             className="mint-token"
             onClick={() =>
-              getToken("0xa2C1ee3dd1ac4b8Ed475396Fd1EF044Bcd25A40A")
+              transferFrom("0x4Ce38CaEd522c6599B9F2116881aaBD8Ef363F1E", 1)
             }
           >
-            get Token
+            transferFrom
           </button>
-
-          <button className="mint-token" onClick={() => Approve()}>
-            Approve
-          </button>
-          <button className="mint-token" onClick={() => checkToken()}>
-            Token length
-          </button>
-          <button className="mint-token" onClick={() => checkApprove()}>
-            Check approve or not
+          <button className="mint-token" onClick={() => checkTokens()}>
+            check tokens
           </button>
         </div>
       </header>

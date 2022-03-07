@@ -22,19 +22,23 @@ function Spinner() {
     setAccount(Accounts);
     console.log("Accounts", account[0]);
   }, []);
+  //from master
   const spinSpinner = async () => {
     setspin(true);
     const Accounts = await web3.eth.getAccounts();
     console.log("spin Account", Accounts[0]);
 
-    const spin = await contractAbi.methods.spinSpinner().call({
-      from: Accounts[0],
-      gas: 8000000,
-    });
-    console.log("spin result", spin);
+    const spin = await contractAbi.methods
+      .spinAndWin("0xCccCC17854642B9b7503b3AC7C38F9F7Dba221F8", Accounts[0])
+      .send({
+        from: Accounts[0],
+        gas: 9000000,
+        gasLimit: 9000000,
+      });
+    console.log("spin result", spin.events.winningIds);
 
     if (spin) {
-      setspin(false);
+      // setspin(false);
       setSpinOutput(spin);
     }
   };
