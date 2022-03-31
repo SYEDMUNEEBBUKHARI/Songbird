@@ -21,7 +21,7 @@ import "../../../node_modules/@openzeppelin/contracts/utils/introspection/ERC165
     using Strings for uint256;
 
     // Token name
-    string private _name;
+    string private _name; 
 
     // Token symbol
     string private _symbol;
