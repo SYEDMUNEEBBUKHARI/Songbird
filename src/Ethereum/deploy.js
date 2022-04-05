@@ -6,14 +6,14 @@ const HDWalletProvider = require("@truffle/hdwallet-provider");
 const fs = require("fs");
 require("dotenv").config();
 const bytecode = fs.readFileSync(
-  "../../artifacts/src_Ethereum_contracts_ownerNFT_sol_OwnerNFT.bin",
+  "../artifacts/src_Ethereum_contracts_ownerNFT_sol_OwnerNFT.bin",
   {
     encoding: "utf8",
   }
 );
 const abi = JSON.parse(
   fs.readFileSync(
-    "../../artifacts/src_Ethereum_contracts_ownerNFT_sol_OwnerNFT.abi",
+    "../artifacts/src_Ethereum_contracts_ownerNFT_sol_OwnerNFT.abi",
     {
       encoding: "utf8",
     }
@@ -36,10 +36,7 @@ const deploy = async () => {
   const result = await new web3.eth.Contract(abi)
     .deploy({
       data: "0x" + bytecode,
-      arguments: [
-        "0xD548a93c4e3557CA5dbA8388Bfca3eb0B715639D",
-        [1, 2, 3, 4, 5],
-      ],
+      arguments: [],
     })
     .send({ gas: "5000000", from: accounts[0] });
   console.log("Contract deployed to", result.options.address);

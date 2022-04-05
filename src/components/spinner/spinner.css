@@ -1,6 +1,6 @@
 .spin {
   position: absolute;
-  top: 45%;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 75px;
@@ -15,10 +15,66 @@
   cursor: pointer;
   z-index: 1000;
 }
+.not-spin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 75px;
+  height: 75px;
+  border: none;
+  border-radius: 50%;
+  background-color: #949494;
+  color: #fff;
+  box-shadow: 0 5px 20px #000;
+  font-weight: bold;
+  font-size: 22px;
+  cursor: not-allowed;
+  z-index: 1000;
+
+  display: inline-block;
+}
+
+.not-spin .tooltiptext {
+  visibility: hidden;
+  width: 220px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 120%;
+  left: 10%;
+  margin-left: -80px;
+  font-size: 20px;
+  font-family:'Roboto',
+    sans-serif;
+}
+
+.not-spin .tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+  font-size: 20px;
+  font-family: Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+}
+
+.not-spin:hover .tooltiptext {
+  visibility: visible;
+}
 .spin:active {
   width: 70px;
   height: 70px;
   font-size: 20px;
+  font-family: Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
 }
 
 .mainbox.animate:after {

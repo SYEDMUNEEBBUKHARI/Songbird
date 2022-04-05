@@ -1,27 +1,74 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-undef */
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Wheel } from "react-custom-roulette";
 import web3 from "../../web3";
-import contractAbi from "../../contractAbi";
-
+// import contractAbi from "../../contractAbi";
+import web3Context from "../../context/web3context";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
 import "./spinner.css";
+
 function Spinner() {
   const [mustSpin, setspin] = useState(false);
   const [spinOutput, setSpinOutput] = useState(0);
+  const contractAbi = useContext(web3Context);
 
-  const data = [
-    { option: "3", style: { backgroundColor: "skyBlue", textColor: "black" } },
-    { option: "1", style: { backgroundColor: "orange" } },
-    { option: "2" },
-  ];
+  //user can play
+  const [userCanPlay, setUserCanPlay] = useState();
+  const [data, setData] = useState([]);
+
   const [account, setAccount] = useState([]);
+  const [winningLimit, setWinningLimit] = useState(3);
 
-  useEffect(async () => {
-    const Accounts = await web3.eth.getAccounts();
-    setAccount(Accounts);
-    console.log("Accounts", account[0]);
+  useEffect(() => {
+    (async function () {
+      const Accounts = await web3.eth.getAccounts();
+      setAccount(Accounts);
+      console.log("Accounts", account[0]);
+      console.log("dataContext-->", contractAbi);
+
+      const userPlayStatus = await contractAbi.methods.userPlayStatus().call({
+        from: account[0],
+      });
+      setUserCanPlay(userPlayStatus);
+      // userPlayStatus;
+
+      const winningLimit = await contractAbi.methods.winningLimit().call({
+        from: account[0],
+      });
+      console.log(
+        "color-->",
+        Math.floor(Math.random() * 16777215).toString(16)
+      );
+      setWinningLimit(winningLimit === 0 ? 3 : winningLimit);
+      for (let i = 1; i <= 3; i++) {
+        setData((data) => [
+          ...data,
+          {
+            option: i,
+            style: {
+              backgroundColor: `#${Math.floor(
+                Math.random() * 16777215
+              ).toString(16)}`,
+              textColor: "white",
+            },
+          },
+        ]);
+      }
+    })();
   }, []);
+  useEffect(() => {
+    console.log("winningLimit", data);
+  }, [winningLimit, data]);
+
+  // {
+  //       option: i,
+  //       style: {
+  //         backgroundColor: Math.floor(Math.random() * 16777215).toString(16),
+  //         textColor: "black",
+  //       },
+  //     }
   //from master
   const spinSpinner = async () => {
     setspin(true);
@@ -44,6 +91,16 @@ function Spinner() {
   };
   return (
     <div>
+      <Select
+        labelId="demo-simple-select-label"
+        id="demo-simple-select"
+        value={10}
+        label="Age"
+      >
+        <MenuItem value={10}>Ten</MenuItem>
+        <MenuItem value={20}>Twenty</MenuItem>
+        <MenuItem value={30}>Thirty</MenuItem>
+      </Select>
       <Wheel
         mustStartSpinning={mustSpin}
         prizeNumber={spinOutput}
@@ -51,9 +108,17 @@ function Spinner() {
         backgroundColors={["#3e3e3e", "#df3428"]}
         textColors={["#ffffff"]}
       />
-      <button className="spin" onClick={() => spinSpinner()}>
-        Spin
-      </button>
+      <div>
+        {" "}
+        <button
+          className={!userCanPlay ? "not-spin" : "spin"}
+          onClick={() => spinSpinner()}
+          disabled={!userCanPlay}
+        >
+          Spin
+          <span className="tooltiptext">First Pay Then Play!</span>
+        </button>
+      </div>
     </div>
   );
 }
