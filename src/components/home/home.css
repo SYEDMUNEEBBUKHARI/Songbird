@@ -1,10 +1,15 @@
 .home {
   text-align: center;
-}
+  background-color: rgba(247, 105, 231, 0.728); /* Used if the image is unavailable */
 
-.home-logo {
-  height: 40vmin;
-  pointer-events: none;
+}
+.spin-win{
+  padding-top:50px;
+  text-align: center;
+  color: #ff0000;
+  font-weight: 700;
+  font-size: 30px;
+  font-family: Roboto;
 }
 .network-name {
   position: relative;
@@ -34,37 +39,32 @@
   top: 10px;
   font-size: 12px;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .home-logo {
-    animation: home-logo-spin infinite 20s linear;
-  }
+.box {
+  background-color: red;
+  padding: 5px;
+  border-radius: 2px;
+  border: none;
+  width: 80%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color:white;
 }
 
-.home-header {
-  background-color: #242e43;
-  min-height: 100vh;
+.spinner-center {
+  position: relative;
+  background-color: #ffffff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
   color: white;
 }
 
-.home-link {
-  color: #61dafb;
-}
-
-@keyframes home-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-.handle-spinner {
-}
-.label {
-  font-size: 14px;
+.logo {
+  background-image: url("../../Assets/logo.png");
+  background-color: #e97fd000;  /* Used if the image is unavailable */
+  height: 200px; /* You must set a specified height */
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size:contain;
 }

@@ -1,0 +1,28 @@
+.make-center {
+  position: relative;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.panel-1 {
+  /* border: 1px solid black; */
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.win-limit {
+  margin-left: -104px;
+    padding-bottom: 20px;
+}
+.css-vj1n65-MuiGrid-root {
+  box-sizing: border-box;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  float: right;
+}
+.css-13i4rnv-MuiGrid-root {
+  position: relative;
+}

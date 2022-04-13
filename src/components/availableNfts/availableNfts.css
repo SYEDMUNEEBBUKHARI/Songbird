@@ -1,0 +1,39 @@
+.available-nfts {
+  font-size: 30px;
+  font-family: Roboto;
+  font-weight: 700;
+  margin-top: 100px;
+  color: red;
+  padding-left: 50px;
+  padding-right: 50px;
+  /* position: relative;
+ 
+  display: flex; */
+
+  /* align-items: center;
+  justify-content: center; */
+  text-align: center;
+}
+.handle-image {
+  width: 80%;
+  height: 10%;
+}
+.rank {
+  font-size: 14px;
+  text-align: left;
+  padding-left: 10px;
+}
+.name {
+  font-size: 14px;
+  text-align: left;
+  padding-left: 0px;
+}
+.head {
+  color: red;
+  font-size: 35px;
+  padding-top: 40px;
+  font-family: Roboto;
+  font-weight: 700;
+}
+.card {
+}
