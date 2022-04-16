@@ -36,6 +36,7 @@ function Spinner() {
   const [winningLimit, setWinningLimit] = useState(3);
   const [payFee, setPayFee] = useState(3);
   const [flag, setFlag] = useState(false);
+  const [fixedTokens, setFixedTokens] = useState("");
   useEffect(() => {}, [userCanPlay]);
   useEffect(() => {
     (async function () {
@@ -71,6 +72,14 @@ function Spinner() {
         from: Accounts[0],
       });
       setPayFee(pF);
+
+      const findAvailableTokens = await contractAbi.methods
+        .findAvailableTokens()
+        .call({
+          from: Accounts[0],
+        });
+      console.log("findAvailableTokens", findAvailableTokens);
+      setFixedTokens(findAvailableTokens);
     })();
     // return () => {};
   }, []);
@@ -120,8 +129,6 @@ function Spinner() {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
 
-  
-
   const handleClose = () => {
     setOpen(false);
     setWinCount("");
@@ -142,7 +149,12 @@ function Spinner() {
       />
       <div>
         {" "}
-        <button className={"spin"} onClick={() => spinSpinner()}>
+        {console.log("fixed", fixedTokens)}
+        <button
+          className={fixedTokens.length > 0 ? "spin" : "not-spin"}
+          onClick={() => spinSpinner()}
+          disabled={fixedTokens.length > 0 ? false : true}
+        >
           {!userCanPlay ? "Play" : "Spin"}
         </button>
       </div>
