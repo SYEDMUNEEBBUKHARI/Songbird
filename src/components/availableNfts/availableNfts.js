@@ -17,7 +17,7 @@ import PaginationOutlined from "../pagination/pagination";
 const AvailableNfts = () => {
   const contractAbi = useContext(web3Context);
   const [account, setAccount] = useState([]);
-  const [availableTokens, setAavailableTokens] = useState("");
+  const [availableTokens, setAavailableTokens] = useState([]);
   const [fixedTokens, setFixedTokens] = useState("");
 
   //lifecycle
@@ -33,45 +33,80 @@ const AvailableNfts = () => {
       .call({
         from: account[0],
       });
-    console.log("findAvailableTokens", findAvailableTokens);
-    setFixedTokens(findAvailableTokens);
-    setAavailableTokens(findAvailableTokens[0].slice(0, 30));
+    let concatArrays = [];
+    for (let i = 0; i < findAvailableTokens.length; i++) {
+      concatArrays = concatArrays.concat(findAvailableTokens[i]);
+    }
+    console.log("come", concatArrays);
+    const d = shuffle(concatArrays);
+    console.log("d", d);
+    setFixedTokens(d);
+    setAavailableTokens(d.slice(0, 60));
     // availableNfts.include(findAvailableTokens);
     return () => {};
   }, []);
 
-  useEffect(() => {}, [availableTokens]);
+  useEffect(() => {}, [availableTokens, fixedTokens]);
   const setPaginationTokens = (pageNo) => {
-    setAavailableTokens(fixedTokens[0].slice((pageNo-1)*30 , pageNo*30));
+    setAavailableTokens(fixedTokens.slice((pageNo-1)*60 , pageNo*60));
     
   }
+
+
+  function shuffle(array) {
+    let currentIndex = array.length,
+      randomIndex;
+
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex],
+      ];
+    }
+
+    return array;
+  }
+
   return (
     <>
       <span className="head">Available Nfts</span>
       <div className="available-nfts">
-        {console.log("availableNfts", availableNfts)}
+        {console.log("availableTokens", availableTokens)}
         {!availableTokens && <span className="tna">Tokens Not Available!</span>}
         {availableTokens && (
           <Grid container spacing={2}>
-            {availableTokens.map((d) => {
+            {availableTokens.map((d, k) => {
               return (
-                <Grid item md={3} lg={3} sm={12} xs={12}>
-                  {console.log("l", d)}
+                <Grid key={k} item md={3} lg={3} sm={12} xs={12}>
                   <Card sx={{ maxWidth: 345, maxHeight: 400 }}>
-                    <p className="rank">Rank #{final[d].rank}</p>
+                    <p className="rank">
+                      Rank #{final[d] && final[d].rank ? final[d].rank : ""}
+                    </p>
 
                     <CardActionArea>
                       <img
                         className="handle-image"
-                        src={`${final[d].image.replace(
-                          "ipfs://",
-                          "https://ipfs.io/ipfs/"
-                        )}`}
+                        src={`${
+                          final[d] && final[d].image
+                            ? final[d].image.replace(
+                                "ipfs://",
+                                "https://ipfs.io/ipfs/"
+                              )
+                            : ""
+                        }`}
                         alt={notFound}
                       />
 
                       <CardContent>
-                        <p className="name">{final[d].name}</p>
+                        <p className="name">
+                          {final[d] && final[d].name ? final[d].name : ""}
+                        </p>
                       </CardContent>
                     </CardActionArea>
                   </Card>
@@ -84,7 +119,7 @@ const AvailableNfts = () => {
       <div className="pagination-center">
         <PaginationOutlined
           setPaginationTokens={setPaginationTokens}
-          fixedTokens={fixedTokens}
+          fixedTokens={fixedTokens && fixedTokens}
           count={10}
         />
       </div>
