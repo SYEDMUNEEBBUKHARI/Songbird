@@ -28,5 +28,4 @@ const input = {
 };
 const tempFile = JSON.parse(solc.compile(JSON.stringify(input)));
 // const contractFile = tempFile.contracts["myNft.sol"]["myNft"];
-console.log("tempFile", tempFile);
 module.exports = tempFile;

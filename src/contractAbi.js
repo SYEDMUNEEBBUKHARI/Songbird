@@ -1,7 +1,6 @@
 import fetchAbi from "./artifacts/src_Ethereum_contracts_ownerNFT_sol_OwnerNFT.abi";
 
 const setAbi = async (data) => {
-  console.log("data", data);
   let abi = await data.then((data) => data);
   return abi;
 };
@@ -12,7 +11,6 @@ async function fetchTheAbi(setAbi) {
   return s;
 }
 let fetchAbiInterface = fetchTheAbi(setAbi);
-// console.log("ABI", da);
 //deployed address
 
 export default fetchAbiInterface;

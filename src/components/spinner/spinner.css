@@ -82,3 +82,12 @@
 .spinner-position {
   margin-top: 30px;
 }
+.h-image {
+  width: 94%;
+  height: 10%;
+}
+
+.count {
+  padding-left: 20px;
+  padding-top: 60px !important;
+}

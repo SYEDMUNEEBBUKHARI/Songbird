@@ -72,9 +72,9 @@ contractStruct[contractAddress].userSructs[tokensOwnerAddress].uTokenIds.push(to
        return true;
 }
 
-function userPlayStatus() public view returns(bool)
+function userPlayStatus(address user) public view returns(bool)
 {
-  return userCanPlayStatus[msg.sender];
+  return userCanPlayStatus[user];
 }
 function spinAndWin() public returns(bool){
 
@@ -152,7 +152,7 @@ require(availableTokens >= winningCount,"Winning limit is more than tokens count
     return true;
 }
 
-uint gameFee=3;
+uint public gameFee=3;
 
 function setGameFee(uint fee) public onlyOwner returns(bool){
 
@@ -172,7 +172,7 @@ if(contractAdresses.length == 0)
 }
     require(msg.value == gameFee *(10**18), "Not enough ETH");
     userCanPlayStatus[msg.sender]=true;
-    ethCount=ethCount + 3;
+    ethCount=ethCount + gameFee;
 }
 function withdraw () public onlyOwner returns(bool res) {
     payable(msg.sender).transfer(address(this).balance);

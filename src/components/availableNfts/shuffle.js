@@ -8,11 +8,8 @@ import pixel from "../../Ethereum/meta/pixelFilter.json";
 const splitData = (pageNo) => {
   let data;
   data = pepe.concat(pixel);
-  // console.log("data", availableNfts.rarity.length);
 
   const output = shuffle(data);
-  // console.log("output", output);
-  console.log("shuffle", output);
 };
 
 function shuffle(array) {
@@ -40,7 +37,6 @@ function arrangeArray() {
   for (let i = 0; i < makeshuffle.length; i++) {
     myArray[makeshuffle[i].id] = makeshuffle[i];
   }
-  console.log("myArray", myArray);
 }
 export default splitData;
 

@@ -9,21 +9,17 @@ import Spinner from "../spinner/spinner";
 import AvailableNfts from "../availableNfts/availableNfts";
 const Home = () => {
   const [account, setAccount] = useState([]);
-  const baseUrl = "https://coston-explorer.flare.network/api";
   const contractAbi = useContext(web3Context);
 
   //lifecycle
-  useEffect(() => {
-    console.log("contractAbi", contractAbi);
-  }, [contractAbi]);
+  useEffect(() => {}, [contractAbi]);
   useEffect(async () => {
     await window.ethereum.enable();
     const Accounts = await web3.eth.getAccounts();
     setAccount(Accounts);
-    const userPlayStatus = await contractAbi.methods.userPlayStatus().call({
-      from: account[0],
+    await contractAbi.methods.userPlayStatus(Accounts[0]).call({
+      from: Accounts[0],
     });
-    console.log("userPlayStatus", userPlayStatus);
     return () => {};
   }, []);
 
@@ -46,7 +42,6 @@ const Home = () => {
       <div className="spinner-center">
         <AvailableNfts />
       </div>
-
     </>
   );
 };

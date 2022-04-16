@@ -25,11 +25,9 @@ const PrivateRoute = () => {
 
     (async function () {
       const Accounts = await web3.eth.getAccounts();
-      console.log(contractAbi);
       const data = await contractAbi.methods
         .owner()
         .call({ from: Accounts[0] });
-      console.log("Data", data);
       await setAccount(Accounts[0]);
       await setOwner(data);
       await setFlag(true);
@@ -38,7 +36,6 @@ const PrivateRoute = () => {
     // return () => {};
   });
   useEffect(() => {
-    console.log("==--flag", owner);
   }, [account]);
   return (
     // Show the component only when the user is logged in

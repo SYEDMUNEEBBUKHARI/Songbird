@@ -35,30 +35,20 @@ const theme = createTheme({
 });
 
 function App() {
-  const [account, setAccount] = useState([]);
   const [contractAbi, setContractAbi] = useState();
   const address = config.DEPLOYMENT_OWNER_CONTRACT_ADDRESS;
-  const baseUrl = "https://coston-explorer.flare.network/api";
 
   useEffect(() => {}, [contractAbi]);
 
   useEffect(async () => {
     (async function () {
       await window.ethereum.enable();
-      const Accounts = await web3.eth.getAccounts();
-      setAccount(Accounts);
 
       fetchAbiInterface.then((abiInterface) => {
         setContractAbi(
           new web3.eth.Contract(JSON.parse(abiInterface), address)
         );
       });
-
-      // listingNft.then((d) => {
-      //   console.log("d", d);
-      // });
-
-      // console.log("lisitng", listingNft);
     })();
   }, []);
 

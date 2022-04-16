@@ -2,13 +2,11 @@
 /* eslint-disable jsx-a11y/alt-text */
 import React, { useEffect, useContext, useState } from "react";
 import "./availableNfts.css";
-import availableNfts from "../../Ethereum/meta/rarepepe_metadata";
 import web3 from "../../web3";
 import web3Context from "../../context/web3context";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
 import notFound from "../../Assets/notfound.png";
 import final from "../../Ethereum/meta/final.json";
@@ -22,7 +20,6 @@ const AvailableNfts = () => {
 
   //lifecycle
   useEffect(() => {
-    console.log("contractAbi", contractAbi);
   }, [contractAbi]);
   useEffect(async () => {
     await window.ethereum.enable();
@@ -37,9 +34,7 @@ const AvailableNfts = () => {
     for (let i = 0; i < findAvailableTokens.length; i++) {
       concatArrays = concatArrays.concat(findAvailableTokens[i]);
     }
-    console.log("come", concatArrays);
     const d = shuffle(concatArrays);
-    console.log("d", d);
     setFixedTokens(d);
     setAavailableTokens(d.slice(0, 60));
     // availableNfts.include(findAvailableTokens);
@@ -48,17 +43,15 @@ const AvailableNfts = () => {
 
   useEffect(() => {}, [availableTokens, fixedTokens]);
   const setPaginationTokens = (pageNo) => {
-    setAavailableTokens(fixedTokens.slice((pageNo-1)*60 , pageNo*60));
-    
-  }
-
+    setAavailableTokens(fixedTokens.slice((pageNo - 1) * 60, pageNo * 60));
+  };
 
   function shuffle(array) {
     let currentIndex = array.length,
       randomIndex;
 
     // While there remain elements to shuffle.
-    while (currentIndex != 0) {
+    while (currentIndex !== 0) {
       // Pick a remaining element.
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
@@ -77,13 +70,21 @@ const AvailableNfts = () => {
     <>
       <span className="head">Available Nfts</span>
       <div className="available-nfts">
-        {console.log("availableTokens", availableTokens)}
-        {!availableTokens && <span className="tna">Tokens Not Available!</span>}
+        {!fixedTokens && (
+          <span className="tna">Tokens Not Available.......</span>
+        )}
         {availableTokens && (
           <Grid container spacing={2}>
             {availableTokens.map((d, k) => {
               return (
-                <Grid key={k} item md={3} lg={3} sm={12} xs={12}>
+                <Grid
+                  key={k}
+                  item
+                  md={availableTokens.length > 4 ? 3 : 6}
+                  lg={availableTokens.length > 4 ? 3 : 6}
+                  sm={12}
+                  xs={12}
+                >
                   <Card sx={{ maxWidth: 345, maxHeight: 400 }}>
                     <p className="rank">
                       Rank #{final[d] && final[d].rank ? final[d].rank : ""}
@@ -117,11 +118,13 @@ const AvailableNfts = () => {
         )}
       </div>
       <div className="pagination-center">
-        <PaginationOutlined
-          setPaginationTokens={setPaginationTokens}
-          fixedTokens={fixedTokens && fixedTokens}
-          count={10}
-        />
+        {fixedTokens && (
+          <PaginationOutlined
+            setPaginationTokens={setPaginationTokens}
+            fixedTokens={fixedTokens && fixedTokens}
+            count={10}
+          />
+        )}
       </div>
     </>
   );
