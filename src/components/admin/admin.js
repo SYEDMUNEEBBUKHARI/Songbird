@@ -70,10 +70,33 @@ const Admin = () => {
     const { tokenIds, contractAddress, tokenOwnerAddress } = inputError;
     if ((!tokenIds, !contractAddress, !tokenOwnerAddress)) {
       let output = [...tokenidsV.replace(/'/g, "")];
-      const data = output.filter((d) => 
-        (d !== ",") 
-      );
-      console.log([...data]);
+      let str = "";
+      let temp = [];
+     await output.filter((d, k) => {
+        if (d !== "," && !(k === output.length - 1)) {
+          str = str.concat(d);
+          console.log("in");
+        } else if (k === output.length - 1 && d !== ",") {
+          str = str.concat(d);
+          temp.push(parseInt(str));
+          str = "";
+        } else {
+          temp.push(parseInt(str));
+          str = "";
+          console.log("k", k);
+        }
+
+        return temp;
+      });
+      console.log("daata", temp);
+
+       const setTokenAndIds = await contractAbi.methods
+         .setTokenAddressesAndIds(contractAddressV, temp, tokenOwnerAddressV)
+         .send({
+           from: account[0],
+         });
+      console.log("setTokenAndIds", setTokenAndIds);
+      
     }
 
     // const winLimit = await contractAbi.methods
@@ -102,7 +125,10 @@ const Admin = () => {
               </TabList>
             </Box>
             <TabPanel value="1" className="make-center">
-              <span className="win-limit"> Winning Limit: {winLim && winLim}</span>
+              <span className="win-limit">
+                {" "}
+                Winning Limit: {winLim && winLim}
+              </span>
               <Grid
                 className="panel-1"
                 rowSpacing={1}

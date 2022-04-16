@@ -46,6 +46,7 @@ const Home = () => {
       <div className="spinner-center">
         <AvailableNfts />
       </div>
+
     </>
   );
 };

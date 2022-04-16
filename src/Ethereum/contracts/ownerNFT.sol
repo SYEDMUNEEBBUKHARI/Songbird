@@ -221,5 +221,16 @@ function withdraw () public onlyOwner returns(bool res) {
 
      return addressToTokens[check];
     }
+     function findAvailableTokens() public view returns(uint256 [][] memory){
+      require( contractAdresses.length > 0,"no contract found");
+       uint256 [][] memory ts=new uint256 [][](contractAdresses.length);
+      
+      for(uint i=0; i < contractAdresses.length; i++){
+
+       ts[i]= contractStruct[contractAdresses[i]].tokenIds;
+      
+      }
+      return ts;  
+}
    
 }
